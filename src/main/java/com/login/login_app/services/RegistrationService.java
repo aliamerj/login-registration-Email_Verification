@@ -1,9 +1,13 @@
 package com.login.login_app.services;
 
-import com.login.login_app.models.ConfirmationToken;
+import com.login.login_app.exception.exceptions.ExpiredException;
+import com.login.login_app.exception.exceptions.HasConfirmed;
+import com.login.login_app.exception.exceptions.NotFoundException;
+import com.login.login_app.exception.exceptions.ValidEmailException;
 import com.login.login_app.models.Registration;
 import com.login.login_app.models.userModel.User;
 import com.login.login_app.models.userModel.UserRole;
+import com.login.login_app.repositories.UserRepository;
 import com.login.login_app.services.emailService.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,10 +24,11 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailValidator emailValidator;
 
+
     public String register(Registration request) {
         var isEmailValid =emailValidator.test(request.getEmail());
         if (!isEmailValid)
-            throw new IllegalStateException("email is valid");
+            throw new ValidEmailException("email is valid");
 
         String token = appUserService.signUp(
                 new User(
@@ -36,26 +41,26 @@ public class RegistrationService {
                 )
         );
 
-        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
 
-        return token;
+
+        return  "http://localhost:8080/api/v1/registration/confirm?token=" + token;
     }
 
     @Transactional
     public String confirmToken(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService
+        var  confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
-                        new IllegalStateException("token not found"));
+                        new NotFoundException("token not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+            throw new HasConfirmed("email already confirmed");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
+            throw new ExpiredException("token expired");
         }
 
         confirmationTokenService.setConfirmedAt(token);
