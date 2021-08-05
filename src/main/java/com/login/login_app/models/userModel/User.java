@@ -1,4 +1,4 @@
-package com.login.login_app.models;
+package com.login.login_app.models.userModel;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,15 +15,24 @@ import java.util.Collections;
 @Entity
 public class User implements UserDetails {
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @SequenceGenerator(name ="user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    @Column(name = "user_id")
     private Long id;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name ="email")
     private String email;
+    @Column(name= "password")
     private String password;
+    @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+    @Column(name = "locked")
     private Boolean locked = false;
+    @Column(name = "enabled")
     private Boolean enabled = false;
 
     public User(String firstName, String lastName, String email, String password, UserRole userRole) {

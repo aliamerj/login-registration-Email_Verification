@@ -1,5 +1,6 @@
 package com.login.login_app.models;
 
+import com.login.login_app.models.userModel.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

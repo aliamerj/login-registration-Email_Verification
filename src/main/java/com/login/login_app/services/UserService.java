@@ -1,7 +1,7 @@
 package com.login.login_app.services;
 
 import com.login.login_app.models.ConfirmationToken;
-import com.login.login_app.models.User;
+import com.login.login_app.models.userModel.User;
 import com.login.login_app.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,13 +25,17 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException(String.format("User with email %s not found", email) ) );
     }
     public String signUp(User user){
+
        boolean weFoundUser = userRepository.findByEmail(user.getEmail()).isPresent();
         if (weFoundUser)
-            //todo:
             throw new IllegalStateException("EMAIL already taken");
+
        String encodePassword = bCryptPasswordEncoder.encode(user.getPassword());
+
        user.setPassword(encodePassword);
+
        userRepository.save(user);
+
        String token = UUID.randomUUID().toString();
        var confir = new ConfirmationToken(
                token,
@@ -40,7 +44,6 @@ public class UserService implements UserDetailsService {
                user
        );
        confirmationTokenService.saveConfirmationToken(confir);
-        //        TODO: SEND EMAIL
         return token;
 
     }

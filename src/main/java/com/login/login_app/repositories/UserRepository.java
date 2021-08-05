@@ -1,7 +1,7 @@
 package com.login.login_app.repositories;
 
 
-import com.login.login_app.models.User;
+import com.login.login_app.models.userModel.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
