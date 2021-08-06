@@ -1,30 +1,41 @@
 package com.login.login_app.security;
 
+import com.login.login_app.models.Registration;
+import com.login.login_app.models.userModel.UserRole;
+import com.login.login_app.repositories.UserRepository;
+import com.login.login_app.security.admins.MakeNewAdmin;
+import com.login.login_app.services.RegistrationService;
 import com.login.login_app.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @EnableWebSecurity
 @Configuration
 @AllArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MakeNewAdmin makeNewAdmin;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v*/registration/**", "/api/v*/user/**")
+                .antMatchers("/api/v*/registration/**")
                 .permitAll()
-                .anyRequest().authenticated().and().formLogin();
+                .anyRequest().authenticated().and().httpBasic();
     }
 
     @Override
@@ -37,5 +48,11 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(bCryptPasswordEncoder);
         provider.setUserDetailsService(userService);
         return provider;
+    }
+
+    @Bean
+    protected void Admin(){
+        makeNewAdmin.addNewAdmin("ali","amer","aliamer","ali123");
+
     }
 }

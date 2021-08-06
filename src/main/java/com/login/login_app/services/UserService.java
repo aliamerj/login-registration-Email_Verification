@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
         if (weFoundUser)
             throw new ValidEmailException("EMAIL already taken");
 
-       String encodePassword = bCryptPasswordEncoder.encode(user.getPassword());
+       var encodePassword = bCryptPasswordEncoder.encode(user.getPassword());
 
        user.setPassword(encodePassword);
 

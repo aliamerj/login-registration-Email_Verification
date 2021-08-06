@@ -69,6 +69,14 @@ public class User implements UserDetails {
         return lastName;
     }
 
+    public void setUsername(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
