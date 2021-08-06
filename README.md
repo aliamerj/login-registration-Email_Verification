@@ -1,5 +1,6 @@
 # login-registration-Email_Verification
-make a new account and verify it via the token link that you will get. this web application has 3 roles 
+make a new account and verify it via the token link that you will get. this web application has 3 roles .
+
 1-non-user: he can just make a new account
 2- user: he can make get users' info. by them id
 3- admin: he can delate, block, and get all user's info.
