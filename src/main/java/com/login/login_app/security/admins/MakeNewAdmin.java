@@ -2,7 +2,7 @@ package com.login.login_app.security.admins;
 
 import com.login.login_app.models.userModel.User;
 import com.login.login_app.models.userModel.UserRole;
-import com.login.login_app.repositories.UserRepository;
+import com.login.login_app.repositoriesTests.UserRepository;
 import com.login.login_app.security.PasswordEncoderConf;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;

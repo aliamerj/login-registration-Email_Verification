@@ -7,7 +7,6 @@ import com.login.login_app.exception.exceptions.ValidEmailException;
 import com.login.login_app.models.Registration;
 import com.login.login_app.models.userModel.User;
 import com.login.login_app.models.userModel.UserRole;
-import com.login.login_app.repositories.UserRepository;
 import com.login.login_app.services.emailService.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,14 +1,11 @@
 package com.login.login_app.security;
-
-import com.login.login_app.models.Registration;
 import com.login.login_app.models.userModel.UserRole;
-import com.login.login_app.repositories.UserRepository;
 import com.login.login_app.security.admins.MakeNewAdmin;
-import com.login.login_app.services.RegistrationService;
 import com.login.login_app.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,11 +15,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static com.login.login_app.models.userModel.UserRole.*;
+
 
 @EnableWebSecurity
 @Configuration
 @AllArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true,jsr250Enabled = true)
 public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -35,6 +34,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v*/registration/**")
                 .permitAll()
+                .antMatchers("/api/v*/user/**").hasAnyRole(ADMIN.name(),USER.name())
                 .anyRequest().authenticated().and().httpBasic();
     }
 

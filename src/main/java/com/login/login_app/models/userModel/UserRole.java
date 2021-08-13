@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
@@ -20,6 +19,7 @@ public enum UserRole {
     private final Set<UserPermission> permissions ;
 
     // attach permission with role
+    @Bean
     public Set<SimpleGrantedAuthority> gratedAuthorities(){
         var permission = getPermissions().stream().map(permissions -> new SimpleGrantedAuthority(permissions.getPermission()))
                 .collect(Collectors.toSet());

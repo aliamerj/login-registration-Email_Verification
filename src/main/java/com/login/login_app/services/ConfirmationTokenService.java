@@ -1,7 +1,7 @@
 package com.login.login_app.services;
 
 import com.login.login_app.models.ConfirmationToken;
-import com.login.login_app.repositories.ConfirmationTokenRepository;
+import com.login.login_app.repositoriesTests.ConfirmationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
