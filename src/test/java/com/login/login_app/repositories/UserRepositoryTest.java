@@ -1,4 +1,4 @@
-package com.login.login_app.repositoriesTests;
+package com.login.login_app.repositories;
 
 
 import com.login.login_app.models.userModel.User;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.jpa.repository.Query;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

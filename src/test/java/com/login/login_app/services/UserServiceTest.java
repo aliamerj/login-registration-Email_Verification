@@ -1,12 +1,11 @@
-package com.login.login_app.servicesTests;
+package com.login.login_app.services;
 
 import com.login.login_app.exception.exceptions.NotFoundException;
 import com.login.login_app.exception.exceptions.ValidEmailException;
 import com.login.login_app.models.userModel.User;
 import com.login.login_app.models.userModel.UserRole;
-import com.login.login_app.repositoriesTests.UserRepository;
-import com.login.login_app.services.ConfirmationTokenService;
-import com.login.login_app.services.UserService;
+import com.login.login_app.repositories.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -106,7 +105,7 @@ class UserServiceTest {
 
        var re = underTest.enableAppUser(userTest().getEmail());
 
-       assertThat(re).isEqualTo(1);
+       Assertions.assertThat(re).isEqualTo(1);
 
 
     }
@@ -120,7 +119,7 @@ class UserServiceTest {
 
         var us = underTest.getAllUsers();
 
-        assertThat(us).isEqualTo(usersList);
+        Assertions.assertThat(us).isEqualTo(usersList);
     }
 
     @Test
@@ -174,7 +173,7 @@ class UserServiceTest {
 
         var test = underTest.getUser(userId);
 
-        assertThat(test).isEqualTo(userTest());
+        Assertions.assertThat(test).isEqualTo(userTest());
 
     }
     @Test

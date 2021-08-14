@@ -4,7 +4,7 @@ import com.login.login_app.exception.exceptions.NotFoundException;
 import com.login.login_app.exception.exceptions.ValidEmailException;
 import com.login.login_app.models.ConfirmationToken;
 import com.login.login_app.models.userModel.User;
-import com.login.login_app.repositoriesTests.UserRepository;
+import com.login.login_app.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

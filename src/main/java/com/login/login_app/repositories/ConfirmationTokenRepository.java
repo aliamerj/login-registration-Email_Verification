@@ -1,4 +1,4 @@
-package com.login.login_app.repositoriesTests;
+package com.login.login_app.repositories;
 
 import com.login.login_app.models.ConfirmationToken;
 import org.springframework.data.jpa.repository.JpaRepository;

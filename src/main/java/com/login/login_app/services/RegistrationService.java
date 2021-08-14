@@ -4,6 +4,7 @@ import com.login.login_app.exception.exceptions.ExpiredException;
 import com.login.login_app.exception.exceptions.HasConfirmed;
 import com.login.login_app.exception.exceptions.NotFoundException;
 import com.login.login_app.exception.exceptions.ValidEmailException;
+import com.login.login_app.models.ConfirmationToken;
 import com.login.login_app.models.Registration;
 import com.login.login_app.models.userModel.User;
 import com.login.login_app.models.userModel.UserRole;
@@ -25,9 +26,7 @@ public class RegistrationService {
 
 
     public String register(Registration request) {
-        var isEmailValid =emailValidator.test(request.getEmail());
-        if (!isEmailValid)
-            throw new ValidEmailException("email is valid");
+        checkIfEmailValid(request);
 
         String token = appUserService.signUp(
                 new User(
@@ -45,27 +44,38 @@ public class RegistrationService {
         return  "http://localhost:8080/api/v1/registration/confirm?token=" + token;
     }
 
+    private void checkIfEmailValid(Registration request) {
+        if (!emailValidator.test(request.getEmail()))
+            throw new ValidEmailException("sorry, email is not valid");
+    }
+
     @Transactional
     public String confirmToken(String token) {
         var  confirmationToken = confirmationTokenService
-                .getToken(token)
-                .orElseThrow(() ->
-                        new NotFoundException("token not found"));
+                .getToken(token).orElseThrow(() -> new NotFoundException("token not found"));
 
-        if (confirmationToken.getConfirmedAt() != null) {
-            throw new HasConfirmed("email already confirmed");
-        }
+        ifAlreadyConfirmed(confirmationToken);
 
-        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+        ifTokenExpired(confirmationToken);
+
+        confirmationTokenService.setConfirmedAt(token);
+        appUserService.enableAppUser(confirmationToken.getUser().getEmail());
+
+        return "confirmed";
+    }
+
+    private void ifTokenExpired(ConfirmationToken confirmationToken) {
+        var expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new ExpiredException("token expired");
         }
+    }
 
-        confirmationTokenService.setConfirmedAt(token);
-        appUserService.enableAppUser(
-                confirmationToken.getUser().getEmail());
-        return "confirmed";
+    private void ifAlreadyConfirmed(ConfirmationToken confirmationToken) {
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new HasConfirmed("email already confirmed");
+        }
     }
 
 
