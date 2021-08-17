@@ -33,7 +33,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v*/registration/**")
-                .permitAll()
+                .not().hasAnyRole(ADMIN.name(),USER.name())
                 .antMatchers("/api/v*/user/**").hasAnyRole(ADMIN.name(),USER.name())
                 .anyRequest().authenticated().and().httpBasic();
     }
@@ -41,6 +41,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
+        auth.inMemoryAuthentication().withUser("aliamer").password("ali123").roles(ADMIN.name());
     }
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
